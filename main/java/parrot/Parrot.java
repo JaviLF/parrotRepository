@@ -16,16 +16,21 @@ public class Parrot {
     }
 
     public double getSpeed() {
-        switch(type) {
+    	SpeedCalculator calculator = createSpeedCalculator();
+        return calculateSpeed(calculator);
+    }
+
+	private double calculateSpeed(SpeedCalculator calculator) {
+		switch(type) {
             case EUROPEAN:
-                return getBaseSpeed();
+                return calculator.calculateSpeed();
             case AFRICAN:
                 return Math.max(0, getBaseSpeed() - getLoadFactor() * numberOfCoconuts);
             case NORWEGIAN_BLUE:
                 return (isNailed) ? 0 : getBaseSpeed(voltage);
         }
         throw new RuntimeException("Should be unreachable");
-    }
+	}
 
     private double getBaseSpeed(double voltage) {
         return Math.min(24.0, voltage*getBaseSpeed());
@@ -37,6 +42,19 @@ public class Parrot {
 
     private double getBaseSpeed() {
         return 12.0;
+    }
+    
+    private SpeedCalculator createSpeedCalculator() {
+    	SpeedCalculator calculator = null;
+    	switch(type) {
+        case EUROPEAN:
+        	calculator = new EuropeanSpeedCalculator();
+        case AFRICAN:
+        	calculator = new EuropeanSpeedCalculator();
+        case NORWEGIAN_BLUE:
+        	calculator = new EuropeanSpeedCalculator();
+    	}
+    	return calculator;
     }
 
 
